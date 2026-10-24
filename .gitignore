@@ -1,0 +1,19 @@
+# Hệ điều hành / trình soạn thảo
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Ảnh làm việc, không đưa lên repo
+*.psd
+*.xcf
+*.ai
+*.kra
+input.png
+face.png
+preview-*.png
+
+# Python
+__pycache__/
+.venv/

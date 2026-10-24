@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mặt đồng hồ GoojodoQ FB051 — bộ prompt tiếng Việt</title>
+<meta name="description" content="Bộ prompt tiếng Việt tạo mặt đồng hồ 240×240 cho GoojodoQ FB051, kèm khung xem trước và công cụ kiểm tra vùng an toàn.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%230b0f14' stroke='%23f2b544' stroke-width='2'/><path d='M16 8v8l6 4' stroke='%23f2b544' stroke-width='2' fill='none' stroke-linecap='round'/></svg>">
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#111823; --panel-2:#0e141d; --line:#1f2b3a;
+    --text:#e8eef7; --muted:#93a1b5; --amber:#f2b544; --mint:#5eead4;
+    --radius:16px; --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:
+      radial-gradient(900px 500px at 85% -10%, #142033 0%, transparent 60%),
+      radial-gradient(700px 400px at 5% 0%, #1a1408 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font:16px/1.65 "Be Vietnam Pro","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--mint); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+  header.top{
+    position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
+    background:rgba(11,15,20,.82); border-bottom:1px solid var(--line);
+  }
+  header.top .wrap{display:flex; align-items:center; gap:14px; height:62px}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px}
+  .brand svg{flex:none}
+  nav.top{margin-left:auto; display:flex; gap:18px; font-size:14px}
+  nav.top a{color:var(--muted)}
+  nav.top a:hover{color:var(--text); text-decoration:none}
+
+  .hero{padding:56px 0 28px}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-size:12.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--amber); border:1px solid #3a2c12;
+    background:#1a1408; padding:6px 12px; border-radius:999px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.15; margin:18px 0 12px; letter-spacing:-.02em}
+  h1 span{color:var(--amber)}
+  .lede{color:var(--muted); max-width:62ch; margin:0 0 22px}
+  .badges{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:26px}
+  .badge{
+    font-size:13px; color:#cfe0f0; background:var(--panel); border:1px solid var(--line);
+    padding:5px 11px; border-radius:999px;
+  }
+  .badge b{color:var(--text); font-weight:600}
+  .hero-grid{display:grid; grid-template-columns:280px 1fr; gap:36px; align-items:center}
+
+  .dial-wrap{display:flex; justify-content:center}
+  .dial{
+    position:relative; width:240px; height:240px; border-radius:50%; overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 42%, #1d2634 0%, #121a24 45%, #0a0f15 100%);
+    border:6px solid #1b242f;
+    box-shadow:0 0 0 1px #2b3745, 0 18px 40px rgba(0,0,0,.55), inset 0 0 34px rgba(0,0,0,.7);
+  }
+  .dial::before{ /* vành trang trí */
+    content:""; position:absolute; inset:16px; border-radius:50%;
+    border:1px solid rgba(242,181,68,.34);
+    box-shadow:inset 0 0 22px rgba(242,181,68,.08);
+  }
+  .dial .brandmark{
+    position:absolute; top:44px; left:0; right:0; text-align:center;
+    font-size:11px; letter-spacing:.34em; color:var(--amber); opacity:.92;
+  }
+  .dial .clock{
+    position:absolute; left:0; right:0; top:102px; text-align:center;
+    font-size:38px; font-weight:700; letter-spacing:.02em; font-variant-numeric:tabular-nums;
+    color:#fff; text-shadow:0 0 18px rgba(94,234,212,.28);
+  }
+  .dial .sub{
+    position:absolute; left:0; right:0; top:148px; text-align:center;
+    font-size:11px; color:var(--muted); letter-spacing:.06em;
+  }
+  .dial .foot{
+    position:absolute; left:0; right:0; bottom:34px; text-align:center;
+    font-size:10px; color:var(--amber); letter-spacing:.16em;
+  }
+  .overlay{position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .2s}
+  .overlay.on{opacity:1}
+  .ov-safe{
+    position:absolute; left:50%; top:50%; width:200px; height:200px; transform:translate(-50%,-50%);
+    border:1px dashed rgba(94,234,212,.7); border-radius:50%;
+  }
+  .ov-time{
+    position:absolute; width:140px; height:72px; left:50%; top:calc(50% + 8px);
+    transform:translate(-50%,-50%); border:1px solid rgba(242,181,68,.85);
+    border-radius:10px; background:rgba(242,181,68,.08);
+  }
+  .ov-label{
+    position:absolute; left:50%; transform:translateX(-50%); font-size:9px;
+    color:#0b0f14; background:var(--amber); padding:1px 5px; border-radius:4px; white-space:nowrap;
+  }
+  .ov-label.safe{top:12px; background:var(--mint)}
+  .dial-tools{display:flex; gap:8px; justify-content:center; margin-top:14px; flex-wrap:wrap}
+  .chip{
+    font:inherit; font-size:13px; color:var(--muted); background:var(--panel);
+    border:1px solid var(--line); padding:6px 12px; border-radius:999px; cursor:pointer;
+  }
+  .chip[aria-pressed="true"]{color:#0b0f14; background:var(--mint); border-color:var(--mint); font-weight:600}
+  .chip:focus-visible,button:focus-visible{outline:2px solid var(--amber); outline-offset:2px}
+
+  section{padding:44px 0; border-top:1px solid var(--line)}
+  h2{font-size:clamp(22px,3.4vw,28px); margin:0 0 8px; letter-spacing:-.01em}
+  .sec-note{color:var(--muted); margin:0 0 22px; max-width:70ch}
+
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px; transition:border-color .2s, transform .2s;
+  }
+  .card:hover{border-color:#2f4054; transform:translateY(-2px)}
+  .card h3{margin:0 0 6px; font-size:15.5px}
+  .card p{margin:0; color:var(--muted); font-size:14px}
+  .card .num{color:var(--amber); font-weight:700; font-size:12px; letter-spacing:.12em}
+
+  .prompt-box{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+  }
+  .tabs{display:flex; gap:4px; padding:10px 10px 0; overflow:auto; border-bottom:1px solid var(--line)}
+  .tab{
+    font:inherit; font-size:13.5px; color:var(--muted); background:transparent; border:0;
+    padding:9px 13px; border-radius:9px 9px 0 0; cursor:pointer; white-space:nowrap;
+  }
+  .tab[aria-selected="true"]{color:var(--amber); background:#131c28; box-shadow:inset 0 -2px 0 var(--amber)}
+  .prompt-head{display:flex; align-items:center; gap:12px; padding:14px 16px 0}
+  .prompt-head p{margin:0; color:var(--muted); font-size:13.5px; flex:1}
+  .btn{
+    font:inherit; font-size:13.5px; font-weight:600; color:#0b0f14; background:var(--amber);
+    border:0; padding:8px 14px; border-radius:10px; cursor:pointer; white-space:nowrap;
+  }
+  .btn:hover{filter:brightness(1.08)}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:#3a4c62}
+  pre.prompt{
+    margin:0; padding:16px; max-height:430px; overflow:auto; font-size:13px; line-height:1.6;
+    font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    color:#d7e3f1; white-space:pre-wrap; word-break:break-word;
+  }
+  .copy-note{color:var(--mint); font-size:13px; opacity:0; transition:opacity .2s}
+  .copy-note.on{opacity:1}
+
+  .checker{display:grid; grid-template-columns:300px 1fr; gap:24px; align-items:start}
+  .drop{
+    border:1.5px dashed #33506b; border-radius:var(--radius); background:#0d141d;
+    padding:20px; text-align:center; cursor:pointer; transition:border-color .2s, background .2s;
+  }
+  .drop.hot{border-color:var(--mint); background:#0f1d21}
+  .drop p{margin:8px 0 0; color:var(--muted); font-size:13px}
+  .canvas-wrap{position:relative; width:240px; margin:0 auto}
+  #cv{width:240px; height:240px; display:block; border-radius:50%; background:#060a0e}
+  .report{font-size:14px; color:var(--muted)}
+  .report ul{padding-left:18px; margin:10px 0 0}
+  .report li{margin:4px 0}
+  .ok{color:var(--mint)} .warn{color:var(--amber)} .bad{color:#ff8a72}
+  .legend{display:flex; gap:16px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); margin-top:14px}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px}
+
+  table{width:100%; border-collapse:collapse; font-size:14px}
+  th,td{text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{color:var(--muted); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.05em}
+  td code,code{background:#0d1520; border:1px solid var(--line); padding:1px 6px; border-radius:6px; font-size:12.5px}
+
+  .steps{counter-reset:s; display:grid; gap:12px}
+  .step{
+    display:grid; grid-template-columns:34px 1fr; gap:14px; align-items:start;
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px;
+  }
+  .step::before{
+    counter-increment:s; content:counter(s);
+    width:34px; height:34px; border-radius:50%; display:grid; place-items:center;
+    background:#1a1408; color:var(--amber); border:1px solid #3a2c12; font-weight:700;
+  }
+  .step h3{margin:0 0 3px; font-size:15.5px}
+  .step p{margin:0; color:var(--muted); font-size:14px}
+  .step b{color:var(--text)}
+
+  .callout{
+    background:linear-gradient(180deg,#1a1408,#141009); border:1px solid #3a2c12;
+    border-radius:var(--radius); padding:18px 20px; margin-top:22px;
+  }
+  .callout h3{margin:0 0 6px; color:var(--amber); font-size:15px}
+  .callout p{margin:0; color:#d9c9a8; font-size:14.5px}
+
+  footer{padding:36px 0 60px; color:var(--muted); font-size:13.5px; border-top:1px solid var(--line)}
+  footer .wrap{display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between}
+
+  @media (max-width:820px){
+    .hero-grid{grid-template-columns:1fr; gap:28px}
+    .checker{grid-template-columns:1fr}
+    nav.top{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="#f2b544" stroke-width="2"/>
+        <path d="M16 8.5V16l5.5 3.5" fill="none" stroke="#f2b544" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      FB051 · Watch Face
+    </div>
+    <nav class="top">
+      <a href="#prompt">Bộ prompt</a>
+      <a href="#kiem-tra">Kiểm tra ảnh</a>
+      <a href="#quy-trinh">Quy trình</a>
+      <a href="#thong-so">Thông số</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <span class="eyebrow">GoojodoQ FB051 · 1,28 inch · mặt tròn</span>
+    <h1>Prompt tạo <span>mặt đồng hồ</span> tiếng Việt,<br>đúng khung tròn 240 × 240</h1>
+    <p class="lede">
+      Bộ prompt viết sẵn cho AI tạo ảnh, kèm khung xem trước và công cụ kiểm tra vùng an toàn.
+      Mục tiêu: ảnh nền sạch, chừa đúng chỗ cho giờ:phút, không bị cắt khi úp vào màn hình tròn.
+    </p>
+    <div class="badges">
+      <span class="badge"><b>240×240</b> px</span>
+      <span class="badge"><b>1:1</b> cắt tròn</span>
+      <span class="badge">Vùng an toàn <b>200</b> px</span>
+      <span class="badge">Vùng giờ <b>140×72</b> px</span>
+      <span class="badge">6 prompt</span>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <div class="dial-wrap">
+          <div class="dial" aria-label="Khung mô phỏng mặt đồng hồ 240 pixel">
+            <div class="brandmark">GOOJODOQ</div>
+            <div class="clock" id="clock">--:--</div>
+            <div class="sub" id="date">—</div>
+            <div class="foot">FB051</div>
+
+            <div class="overlay" id="ovSafe">
+              <div class="ov-safe"><span class="ov-label safe">An toàn 200 px</span></div>
+            </div>
+            <div class="overlay" id="ovTime">
+              <div class="ov-time"><span class="ov-label">Vùng giờ 140×72</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="dial-tools">
+          <button class="chip" id="btnSafe" aria-pressed="false">Vùng an toàn</button>
+          <button class="chip" id="btnTime" aria-pressed="false">Vùng giờ</button>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="num">01</div>
+          <h3>Ảnh vuông, cắt tròn</h3>
+          <p>AI xuất 1:1. Ứng dụng cắt thành hình tròn nên mọi thứ ngoài 200 px sẽ mất.</p>
+        </div>
+        <div class="card">
+          <div class="num">02</div>
+          <h3>Chừa chỗ cho giờ</h3>
+          <p>Giờ:phút do ứng dụng vẽ đè. Trung tâm phải tối và trống, nếu không chữ sẽ chìm.</p>
+        </div>
+        <div class="card">
+          <div class="num">03</div>
+          <h3>Không vẽ kim, số giờ</h3>
+          <p>Ảnh chỉ là nền. Kim và vạch chia do AI vẽ sẽ lệch với giờ thật.</p>
+        </div>
+        <div class="card">
+          <div class="num">04</div>
+          <h3>Chữ Việt có dấu</h3>
+          <p>AI hay viết sai dấu. Tốt nhất tạo nền không chữ rồi thêm chữ bằng Canva/Figma.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="prompt">
+    <div class="wrap">
+      <h2>Bộ prompt</h2>
+      <p class="sec-note">Chọn một prompt, bấm <b>Sao chép</b>, dán vào công cụ tạo ảnh. Prompt gốc có sẵn chỗ trống để bạn đổi chủ đề và bảng màu.</p>
+
+      <div class="prompt-box">
+        <div class="tabs" role="tablist" id="tabs"></div>
+        <div class="prompt-head">
+          <p id="tabDesc">—</p>
+          <span class="copy-note" id="copyNote">Đã sao chép</span>
+          <button class="btn ghost" id="btnRaw" title="Mở file markdown gốc">Bản .md</button>
+          <button class="btn" id="btnCopy">Sao chép</button>
+        </div>
+        <pre class="prompt" id="promptText" tabindex="0">—</pre>
+      </div>
+
+      <div class="callout">
+        <h3>Mẹo quan trọng nhất</h3>
+        <p>Đừng để AI viết chữ tiếng Việt. Hãy tạo nền không chữ, kiểm tra bằng công cụ bên dưới, rồi thêm chữ bằng Canva, Figma hoặc Photopea với font <b>Be Vietnam Pro</b> hoặc <b>Lora</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="kiem-tra">
+    <div class="wrap">
+      <h2>Kiểm tra ảnh trước khi đưa vào đồng hồ</h2>
+      <p class="sec-note">Kéo ảnh vào khung hoặc bấm để chọn. Ảnh không được tải lên máy chủ nào — mọi thứ chạy trong trình duyệt của bạn.</p>
+
+      <div class="checker">
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Chọn ảnh để kiểm tra">
+          <div class="canvas-wrap"><canvas id="cv" width="240" height="240"></canvas></div>
+          <p id="dropText">Kéo ảnh vào đây<br>hoặc bấm để chọn</p>
+          <input type="file" id="file" accept="image/*" hidden>
+        </div>
+
+        <div>
+          <div class="report" id="report">
+            <p style="margin:0">Chưa có ảnh. Kích thước khuyến nghị: <b>240 × 240</b>, PNG hoặc JPG, dưới 60 KB.</p>
+          </div>
+          <div class="legend">
+            <span><i style="background:#5eead4"></i>Vòng an toàn 200 px</span>
+            <span><i style="background:#f2b544"></i>Vùng giờ 140 × 72</span>
+            <span><i style="background:#43546a"></i>Vùng sẽ bị cắt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quy-trinh">
+    <div class="wrap">
+      <h2>Quy trình 4 bước</h2>
+      <p class="sec-note">Từ prompt đến mặt đồng hồ trên tay, không cần cài đặt gì ngoài ứng dụng điện thoại.</p>
+      <div class="steps">
+        <div class="step"><div>
+          <h3>Tạo ảnh</h3>
+          <p>Dán prompt, thêm chủ đề và bảng màu. Xuất ảnh vuông, càng lớn càng tốt (1024 px trở lên).</p>
+        </div></div>
+        <div class="step"><div>
+          <h3>Kiểm tra và thu nhỏ</h3>
+          <p>Kéo ảnh vào mục <b>Kiểm tra ảnh</b>. Nếu đạt, thu về <code>240×240</code> bằng ImageMagick hoặc Python — hướng dẫn ở <code>prompt/03-hau-ky.md</code>.</p>
+        </div></div>
+        <div class="step"><div>
+          <h3>Đưa vào ứng dụng</h3>
+          <p>Mở ứng dụng GoojodoQ trên điện thoại → <b>Mặt đồng hồ</b> → <b>Tuỳ chỉnh / DIY</b> → chọn ảnh → lưu. Đồng hồ phải đang kết nối.</p>
+        </div></div>
+        <div class="step"><div>
+          <h3>Xem trên tay và tinh chỉnh</h3>
+          <p>Kiểm tra chữ giờ có bị chìm không, chữ có bị cắt không. Sửa bằng prompt chỉnh ảnh, không cắt bừa.</p>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="thong-so">
+    <div class="wrap">
+      <h2>Thông số đang dùng</h2>
+      <p class="sec-note">Độ phân giải 240 × 240 là giả định có căn cứ, cần xác minh trên máy thật. Chi tiết và cách kiểm tra: <code>docs/thiet-bi.md</code>.</p>
+      <table>
+        <thead><tr><th>Hạng mục</th><th>Giá trị</th><th>Ghi chú</th></tr></thead>
+        <tbody>
+          <tr><td>Thiết bị</td><td>GoojodoQ FB051</td><td>Mặt tròn, 1,28 inch</td></tr>
+          <tr><td>Ảnh nền</td><td>240 × 240 px</td><td>Giả định, kiểm tra lại trong Cài đặt đồng hồ</td></tr>
+          <tr><td>Cắt hiển thị</td><td>Hình tròn Ø 240</td><td>Nội dung quan trọng trong Ø 200</td></tr>
+          <tr><td>Vùng giờ</td><td>140 × 72 px</td><td>Tâm lệch xuống 8 px, do ứng dụng vẽ</td></tr>
+          <tr><td>Định dạng</td><td>PNG / JPG</td><td>RGB, không alpha, dưới 60 KB</td></tr>
+          <tr><td>Chống nước</td><td>IP67</td><td>Theo nhà bán lẻ</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout" style="margin-top:24px">
+        <h3>Nếu máy thật là 240 × 280</h3>
+        <p>Giữ nguyên bố cục theo tỉ lệ: vùng an toàn vẫn là đường tròn đường kính bằng 83% cạnh ngắn, vùng giờ vẫn chiếm 58% × 30% cạnh ngắn. Đừng thiết kế lại từ đầu.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>GoojodoQ FB051 · Bộ prompt mặt đồng hồ tiếng Việt</span>
+    <span><a href="https://github.com/khahdihdz/goojodoq-fb051-watchface-vi">Mã nguồn trên GitHub</a> · Giấy phép MIT</span>
+  </div>
+</footer>
+
+<script>
+// ---------- dữ liệu prompt ----------
+const PROMPTS = [
+  {
+    id: "goc",
+    name: "Prompt gốc",
+    desc: "Khung xương đầy đủ, có chỗ trống cho chủ đề và bảng màu. Dùng khi bạn muốn tự thiết kế.",
+    file: "prompt/01-prompt-goc.md",
+    text: `VAI TRÒ
+Bạn là nhà thiết kế mặt đồng hồ số, chuyên tạo ảnh nền cho smartwatch màn hình tròn.
+
+MỤC TIÊU
+Tạo MỘT ảnh nền mặt đồng hồ, tỉ lệ 1:1, kích thước 240 × 240 pixel, dùng làm mặt đồng hồ tuỳ chỉnh cho GoojodoQ FB051 (màn hình tròn 1,28 inch, 240 × 240 px).
+
+QUY TẮC KỸ THUẬT (bắt buộc)
+1. Ảnh vuông chính xác 1:1. Không viền trắng, không khung, không vẽ thân đồng hồ, dây đeo, bóng đổ, không mô phỏng thiết bị, không watermark, không chữ ký tác giả.
+2. Ảnh sẽ được ứng dụng cắt thành hình tròn đường kính 240 px. Mọi nội dung quan trọng phải nằm trong hình tròn đường kính 200 px, tức cách đều mép ảnh 20 px.
+3. Chừa một vùng trống hình chữ nhật khoảng 140 × 72 px ở giữa ảnh (tâm vùng này lệch xuống 8 px so với tâm ảnh) để ứng dụng tự vẽ giờ:phút. Vùng này phải là nền sạch: không chữ, không số, không hoa văn nhỏ.
+4. Không vẽ kim đồng hồ. Không vẽ vạch chia giờ. Không vẽ số 12, 3, 6, 9. Không vẽ giờ, ngày, tháng cụ thể.
+5. Tương phản cao: nền tối, chi tiết sáng vừa phải. Không dùng mảng sáng lớn ở trung tâm vì sẽ làm chìm chữ giờ do ứng dụng vẽ lên.
+6. Ưu tiên hình khối, gradient, hoa văn. Nếu có chữ: tối đa 6 từ, chiều cao chữ tối thiểu 14 px trên ảnh 240 px, tiếng Việt có dấu đầy đủ, không viết tắt, không trộn tiếng Anh.
+
+CHỦ ĐỀ
+{{CHỦ_ĐỀ}}
+
+BỐ CỤC
+- Vành trên (góc 10 giờ đến 2 giờ): điểm nhấn chính, có thể là một dòng chữ nhỏ hoặc một motif.
+- Hai bên vành (3 giờ và 9 giờ): chi tiết phụ đối xứng hoặc bất đối xứng có chủ đích.
+- Vành dưới (góc 5 giờ đến 7 giờ): một dòng chữ nhỏ hoặc một biểu tượng duy nhất.
+- Trung tâm: để trống cho giờ:phút.
+- Các chi tiết xuyên tâm hướng về tâm ảnh, không cắt ngang vùng trống ở giữa.
+
+BẢNG MÀU
+{{BẢNG_MÀU}}
+
+PHONG CÁCH
+Phẳng, sạch, sắc nét, không nhiễu hạt, không noise, không hiệu ứng 3D quá đà. Tối ưu để đọc trên màn hình 1,28 inch. Viền ngoài sẫm hơn nền 15–20% để hoà vào khung máy.
+
+KHÔNG ĐƯỢC CÓ
+- Chữ méo, chữ thiếu dấu, chữ vô nghĩa, chữ giả kiểu lorem ipsum.
+- Hình mô phỏng đồng hồ, mặt số, kim, vạch chia.
+- Logo thương hiệu thật (Apple, Samsung, Xiaomi, GoojodoQ…).
+- Chi tiết mảnh dưới 2 px hoặc nội dung sắc nhọn, nhạy cảm.
+- Khung viền giả lập màn hình.
+
+ĐẦU RA
+Một ảnh vuông 240 × 240 px. Không kèm lời giải thích, không chú thích ngoài ảnh.`
+  },
+  {
+    id: "phoco",
+    name: "Đêm phố cổ",
+    desc: "Mái ngói cong, đèn lồng giấy, tường vôi loang. Ấm, hoài niệm, hợp dây da nâu.",
+    file: "prompt/02-bien-the.md",
+    text: `Tạo ảnh nền mặt đồng hồ vuông 1:1, 240 × 240 px cho GoojodoQ FB051 (màn hình tròn 1,28 inch).
+
+CHỦ ĐỀ: Đêm phố cổ Hà Nội — mái ngói cong, đèn lồng giấy, mảng tường vôi loang, tĩnh lặng và sang trọng. Chi tiết tập trung ở vành trên và hai bên, trung tâm là mảng tối sạch.
+
+BẢNG MÀU: nền #0C0A08, nền phụ #17110C, đèn lồng #E8A33D, tường vôi #C9B79C, mái ngói #5A3A2A, nhấn đỏ #C2452F.
+
+BỐ CỤC: mái ngói uốn theo cung ở vành trên, không chạm vùng giữa; đèn lồng nhỏ ở góc 10 giờ và 2 giờ; vành dưới là một dòng chữ nhỏ tiếng Việt có dấu hoặc một biểu tượng duy nhất; trung tâm là mảng tối sạch.
+
+RÀNG BUỘC: mọi nội dung quan trọng nằm trong hình tròn đường kính 200 px (cách mép 20 px); vùng giữa 140 × 72 px (tâm lệch xuống 8 px) phải trống và tối; không vẽ kim, vạch chia, số 12/3/6/9, không vẽ thân đồng hồ, không watermark; chữ tiếng Việt đúng dấu, tối đa 6 từ; không logo thương hiệu.
+
+PHONG CÁCH: phẳng, sắc nét, không noise, viền ngoài sẫm hơn nền 15–20%.
+
+ĐẦU RA: một ảnh vuông 240 × 240 px, không lời giải thích.`
+  },
+  {
+    id: "hud",
+    name: "HUD kỹ thuật",
+    desc: "Vòng cung mảnh, lưới toạ độ mờ, ánh cyan. Lạnh, chính xác, hợp dây silicon đen.",
+    file: "prompt/02-bien-the.md",
+    text: `Tạo ảnh nền mặt đồng hồ vuông 1:1, 240 × 240 px cho GoojodoQ FB051 (màn hình tròn 1,28 inch).
+
+CHỦ ĐỀ: giao diện HUD kỹ thuật tối giản — vòng cung mảnh, vạch chia áp suất, lưới toạ độ mờ, ánh cyan nhẹ. Cảm giác chính xác, lạnh, hiện đại.
+
+BẢNG MÀU: nền #05080C, panel #0B1218, cyan #35E0D0, xanh lưới #123038, cảnh báo #FF7A45, chữ #D8F3EF.
+
+BỐ CỤC: vạch chia chỉ ở vành ngoài, dài 4–8 px, mật độ thưa, tuyệt đối không tạo thành mặt số; hai cung mảnh đối xứng ở 3 giờ và 9 giờ; một dòng chữ nhỏ ở vành dưới; lưới toạ độ mờ phủ nền nhưng không đi vào vùng giữa.
+
+RÀNG BUỘC: mọi nội dung quan trọng nằm trong hình tròn đường kính 200 px; vùng giữa 140 × 72 px (tâm lệch xuống 8 px) trống, tối, không lưới, không vạch; không vẽ kim, số giờ, không vẽ thân đồng hồ, không watermark; chữ tiếng Việt đúng dấu, tối đa 6 từ.
+
+PHONG CÁCH: phẳng, sắc nét, phát sáng rất nhẹ, không noise, viền ngoài tối dần về #000000.
+
+ĐẦU RA: một ảnh vuông 240 × 240 px, không lời giải thích.`
+  },
+  {
+    id: "lichviet",
+    name: "Lịch Việt",
+    desc: "Giấy dó, hoa sen chạm mờ, mực tàu, sơn mài đỏ. Mộc mạc, thủ công, yên tĩnh.",
+    file: "prompt/02-bien-the.md",
+    text: `Tạo ảnh nền mặt đồng hồ vuông 1:1, 240 × 240 px cho GoojodoQ FB051 (màn hình tròn 1,28 inch).
+
+CHỦ ĐỀ: trang giấy dó Việt Nam — hoa sen chạm nổi mờ, đường tròn mảnh như triện mực, mảng mực tàu loang nhẹ ở góc. Mộc mạc, thủ công, yên tĩnh.
+
+BẢNG MÀU: nền giấy #EDE3CE, mực #1C1A17, sơn mài đỏ #A8322A, lá sen #4F6B4A, vàng cũ #B08A3E.
+
+BỐ CỤC: một cánh sen lớn ở vành trên, kéo dài theo cung; đường triện tròn mảnh ở vành ngoài; góc 4 giờ có mảng mực loang nhẹ; vành dưới là một dòng chữ nhỏ màu mực; trung tâm là mảng giấy sạch, hơi tối hơn nền để chữ giờ nổi.
+
+RÀNG BUỘC: mọi nội dung quan trọng nằm trong hình tròn đường kính 200 px; vùng giữa 140 × 72 px (tâm lệch xuống 8 px) chỉ là giấy trơn, không hoa văn; không vẽ kim, vạch chia, số giờ; không vẽ thân đồng hồ; chữ tiếng Việt đúng dấu, tối đa 6 từ; không logo thương hiệu.
+
+PHONG CÁCH: chất liệu giấy thật, chi tiết mảnh nhưng không dưới 2 px, không noise mạnh, không hiệu ứng 3D.
+
+ĐẦU RA: một ảnh vuông 240 × 240 px, không lời giải thích.`
+  },
+  {
+    id: "thethao",
+    name: "Thể thao",
+    desc: "Dải chéo, vệt tốc độ, cung nhịp tim. Nhanh, mạnh, dễ đọc khi đang chạy.",
+    file: "prompt/02-bien-the.md",
+    text: `Tạo ảnh nền mặt đồng hồ vuông 1:1, 240 × 240 px cho GoojodoQ FB051 (màn hình tròn 1,28 inch).
+
+CHỦ ĐỀ: mặt đồng hồ thể thao năng động — dải chéo chuyển động, vệt tốc độ, vòng cung nhịp tim cách điệu. Gọn, mạnh, dễ đọc khi đang chạy.
+
+BẢNG MÀU: nền #0A0A0B, xám #2A2D31, cam #FF6B2C, trắng #F5F5F5, xám nhạt #6B7076.
+
+BỐ CỤC: hai dải chéo chỉ ở góc 4 giờ và 8 giờ, không cắt qua tâm; một cung nhịp tim mảnh ở vành trên; vệt tốc độ ngắn ở vành trái; vành dưới là một dòng chữ nhỏ tiếng Việt có dấu; trung tâm tối, trống.
+
+RÀNG BUỘC: mọi nội dung quan trọng nằm trong hình tròn đường kính 200 px; vùng giữa 140 × 72 px (tâm lệch xuống 8 px) trống hoàn toàn, không dải, không vệt; không vẽ kim, vạch chia, số giờ; không vẽ thân đồng hồ, không watermark; chữ tiếng Việt đúng dấu, tối đa 6 từ.
+
+PHONG CÁCH: phẳng, tương phản cao, cạnh sắc, không noise, viền ngoài sẫm hơn nền 20%.
+
+ĐẦU RA: một ảnh vuông 240 × 240 px, không lời giải thích.`
+  },
+  {
+    id: "toigian",
+    name: "Tối giản kim loại",
+    desc: "Đen nhám, một vòng titan xước, vài đường khắc chìm. Đắt tiền, im lặng.",
+    file: "prompt/02-bien-the.md",
+    text: `Tạo ảnh nền mặt đồng hồ vuông 1:1, 240 × 240 px cho GoojodoQ FB051 (màn hình tròn 1,28 inch).
+
+CHỦ ĐỀ: mặt đồng hồ tối giản sang trọng — nền đen nhám, một vòng titan xước mảnh, vài đường khắc chìm, không hoa văn thừa. Cảm giác đắt tiền, im lặng.
+
+BẢNG MÀU: nền #0E0F11, titan #B8BFC7, vàng đồng #C9A227, xám khói #3A3F45, chữ #E6E9EC.
+
+BỐ CỤC: chỉ một vòng titan duy nhất, dày 2 px, đường kính 196 px; ba đường khắc chìm ngắn ở vành trên; một dòng chữ nhỏ ở vành dưới; trung tâm là mảng đen nhám sạch, không phản chiếu.
+
+RÀNG BUỘC: mọi nội dung quan trọng nằm trong hình tròn đường kính 200 px; vùng giữa 140 × 72 px (tâm lệch xuống 8 px) trống, không vòng, không chữ; không vẽ kim, vạch chia, số giờ; không vẽ thân đồng hồ, không watermark; chữ tiếng Việt đúng dấu, tối đa 6 từ.
+
+PHONG CÁCH: tối giản, bề mặt nhám, ánh kim loại rất nhẹ, không noise, không gradient lan vào giữa.
+
+ĐẦU RA: một ảnh vuông 240 × 240 px, không lời giải thích.`
+  },
+  {
+    id: "suaanh",
+    name: "Prompt sửa ảnh",
+    desc: "Ảnh đầu chưa đạt? Dùng các câu này thay vì tạo lại từ đầu.",
+    file: "prompt/03-hau-ky.md",
+    text: `Dùng kèm ảnh đã tạo. Chọn một câu phù hợp:
+
+1) Chữ hoặc chi tiết chạm mép
+Giữ nguyên phong cách và bảng màu. Dịch toàn bộ nội dung vào trong: không chi tiết nào được nằm ngoài hình tròn đường kính 200 px tính trên khung 240 px. Vùng giữa 140 × 72 px phải trống hoàn toàn.
+
+2) Có kim hoặc số giờ
+Xoá toàn bộ kim đồng hồ, vạch chia giờ và các số 12, 3, 6, 9. Chỉ giữ nền và hoa văn trang trí.
+
+3) Trung tâm quá sáng
+Làm tối vùng trung tâm 140 × 72 px xuống còn khoảng 20% độ sáng hiện tại, giữ nguyên chi tiết ở vành ngoài.
+
+4) Chữ tiếng Việt sai dấu
+Xoá toàn bộ chữ trong ảnh. Không thêm chữ mới. Chỉ giữ hình khối và hoa văn.
+
+5) Muốn đổi màu nhưng giữ bố cục
+Giữ nguyên bố cục, hình khối và vị trí chi tiết. Chỉ thay bảng màu thành: (điền mã màu mới). Không thêm hoặc bớt chi tiết.`
+  }
+];
+
+// ---------- tabs ----------
+const tabsEl = document.getElementById("tabs");
+const preEl = document.getElementById("promptText");
+const descEl = document.getElementById("tabDesc");
+const rawBtn = document.getElementById("btnRaw");
+let current = 0;
+
+function renderTabs(){
+  PROMPTS.forEach((p, i) => {
+    const b = document.createElement("button");
+    b.className = "tab";
+    b.type = "button";
+    b.setAttribute("role", "tab");
+    b.id = "tab-" + p.id;
+    b.textContent = p.name;
+    b.setAttribute("aria-selected", i === current ? "true" : "false");
+    b.addEventListener("click", () => select(i));
+    tabsEl.appendChild(b);
+  });
+  select(0);
+}
+
+function select(i){
+  current = i;
+  const p = PROMPTS[i];
+  [...tabsEl.children].forEach((b, k) => b.setAttribute("aria-selected", k === i ? "true" : "false"));
+  preEl.textContent = p.text;
+  descEl.textContent = p.desc;
+  rawBtn.textContent = p.file.endsWith("02-bien-the.md") ? "Xem 5 biến thể" : (p.id === "suaanh" ? "Xem hậu kỳ" : "Bản .md");
+  rawBtn.dataset.file = p.file;
+}
+
+rawBtn.addEventListener("click", () => {
+  const f = rawBtn.dataset.file;
+  const url = f === "prompt/02-bien-the.md" ? "prompt/02-bien-the.md"
+            : f === "prompt/03-hau-ky.md" ? "prompt/03-hau-ky.md"
+            : "prompt/01-prompt-goc.md";
+  window.open(url, "_blank", "noopener");
+});
+
+// ---------- copy ----------
+const copyNote = document.getElementById("copyNote");
+document.getElementById("btnCopy").addEventListener("click", async () => {
+  const text = PROMPTS[current].text;
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+  copyNote.classList.add("on");
+  setTimeout(() => copyNote.classList.remove("on"), 1800);
+});
+
+// ---------- đồng hồ mô phỏng ----------
+const clockEl = document.getElementById("clock");
+const dateEl = document.getElementById("date");
+const THU = ["CHỦ NHẬT","THỨ HAI","THỨ BA","THỨ TƯ","THỨ NĂM","THỨ SÁU","THỨ BẢY"];
+function tick(){
+  const d = new Date();
+  clockEl.textContent = String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+  dateEl.textContent = THU[d.getDay()] + " · " + String(d.getDate()).padStart(2,"0") + "/" +
+    String(d.getMonth()+1).padStart(2,"0");
+}
+tick();
+setInterval(tick, 15000);
+
+// ---------- overlay ----------
+function bindToggle(btnId, ovId){
+  const b = document.getElementById(btnId), o = document.getElementById(ovId);
+  b.addEventListener("click", () => {
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    o.classList.toggle("on", on);
+  });
+}
+bindToggle("btnSafe", "ovSafe");
+bindToggle("btnTime", "ovTime");
+
+// ---------- kiểm tra ảnh ----------
+const drop = document.getElementById("drop");
+const fileInput = document.getElementById("file");
+const cv = document.getElementById("cv");
+const ctx = cv.getContext("2d");
+const report = document.getElementById("report");
+const dropText = document.getElementById("dropText");
+
+function drawOverlay(){
+  const S = 240;
+  // vùng bị cắt
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0,0,S,S);
+  ctx.arc(120,120,120,0,Math.PI*2,true);
+  ctx.fillStyle = "rgba(6,10,14,.72)";
+  ctx.fill("evenodd");
+  ctx.restore();
+
+  // vòng an toàn
+  ctx.save();
+  ctx.setLineDash([5,4]);
+  ctx.strokeStyle = "rgba(94,234,212,.9)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(120,120,100,0,Math.PI*2);
+  ctx.stroke();
+  ctx.restore();
+
+  // vùng giờ: 140x72, tâm lệch xuống 8px
+  ctx.save();
+  ctx.strokeStyle = "rgba(242,181,68,.95)";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(120-70, 128-36, 140, 72);
+  ctx.fillStyle = "rgba(242,181,68,.10)";
+  ctx.fillRect(120-70, 128-36, 140, 72);
+  ctx.restore();
+}
+
+function checkImage(file){
+  if (!file || !file.type.startsWith("image/")) return;
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    const S = 240;
+    ctx.clearRect(0,0,S,S);
+    ctx.fillStyle = "#060a0e";
+    ctx.fillRect(0,0,S,S);
+
+    // vẽ vừa khung, giữ tỉ lệ, căn giữa
+    const scale = Math.min(S / img.width, S / img.height);
+    const w = img.width * scale, h = img.height * scale;
+    ctx.drawImage(img, (S-w)/2, (S-h)/2, w, h);
+    drawOverlay();
+
+    const kb = (file.size/1024).toFixed(1);
+    const square = img.width === img.height;
+    const exact = img.width === 240 && img.height === 240;
+    const big = img.width >= 240 && img.height >= 240;
+
+    const items = [];
+    items.push(`<li>Kích thước: <b>${img.width} × ${img.height}</b> px · ${kb} KB</li>`);
+    items.push(exact
+      ? `<li class="ok">Đúng chuẩn 240 × 240.</li>`
+      : square
+        ? `<li class="warn">Vuông nhưng chưa đúng 240 × 240 — thu nhỏ về 240 trước khi dùng.</li>`
+        : `<li class="bad">Không phải ảnh vuông — ảnh sẽ bị cắt hoặc méo.</li>`);
+    items.push(big
+      ? `<li class="ok">Độ phân giải đủ để thu nhỏ sắc nét.</li>`
+      : `<li class="bad">Ảnh nhỏ hơn 240 px — sẽ bị mờ khi phóng to.</li>`);
+    items.push(file.size > 200*1024
+      ? `<li class="warn">Dung lượng ${kb} KB khá lớn, nên nén dưới 60 KB.</li>`
+      : `<li class="ok">Dung lượng ổn.</li>`);
+    items.push(`<li>Kiểm tra bằng mắt: chữ và chi tiết quan trọng phải nằm trong <b>vòng xanh</b>; vùng <b>cam</b> phải trống và tối.</li>`);
+
+    report.innerHTML = `<ul>${items.join("")}</ul>`;
+    dropText.textContent = file.name.length > 34 ? file.name.slice(0,32) + "…" : file.name;
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
+}
+
+drop.addEventListener("click", () => fileInput.click());
+drop.addEventListener("keydown", e => {
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); }
+});
+fileInput.addEventListener("change", e => checkImage(e.target.files[0]));
+["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.add("hot");
+}));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.remove("hot");
+}));
+drop.addEventListener("drop", e => {
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  checkImage(f);
+});
+
+renderTabs();
+drawOverlay();
+</script>
+</body>
+</html>

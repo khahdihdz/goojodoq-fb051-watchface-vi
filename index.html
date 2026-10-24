@@ -72,12 +72,12 @@
     font-size:11px; letter-spacing:.34em; color:var(--amber); opacity:.92;
   }
   .dial .clock{
-    position:absolute; left:0; right:0; top:102px; text-align:center;
-    font-size:38px; font-weight:700; letter-spacing:.02em; font-variant-numeric:tabular-nums;
+    position:absolute; left:0; right:0; top:104px; text-align:center;
+    font-size:38px; line-height:1; font-weight:700; letter-spacing:.02em; font-variant-numeric:tabular-nums;
     color:#fff; text-shadow:0 0 18px rgba(94,234,212,.28);
   }
   .dial .sub{
-    position:absolute; left:0; right:0; top:148px; text-align:center;
+    position:absolute; left:0; right:0; top:150px; text-align:center;
     font-size:11px; color:var(--muted); letter-spacing:.06em;
   }
   .dial .foot{
@@ -156,7 +156,7 @@
   .drop.hot{border-color:var(--mint); background:#0f1d21}
   .drop p{margin:8px 0 0; color:var(--muted); font-size:13px}
   .canvas-wrap{position:relative; width:240px; margin:0 auto}
-  #cv{width:240px; height:240px; display:block; border-radius:50%; background:#060a0e}
+  #cv{width:240px; height:240px; display:block; border-radius:8px; background:#060a0e; box-shadow:0 0 0 1px var(--line)}
   .report{font-size:14px; color:var(--muted)}
   .report ul{padding-left:18px; margin:10px 0 0}
   .report li{margin:4px 0}
@@ -327,7 +327,7 @@
           <div class="legend">
             <span><i style="background:#5eead4"></i>Vòng an toàn 200 px</span>
             <span><i style="background:#f2b544"></i>Vùng giờ 140 × 72</span>
-            <span><i style="background:#43546a"></i>Vùng sẽ bị cắt</span>
+            <span><i style="background:#0a0f15;border:1px solid #43546a"></i>Vùng bị cắt (làm tối)</span>
           </div>
         </div>
       </div>
